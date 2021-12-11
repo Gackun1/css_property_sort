@@ -1,29 +1,16 @@
-const { src, dest, watch, series }  = require("gulp");
-const sass = require("gulp-sass")(require('sass'));
+const { src, dest, watch, series } = require("gulp");
 const csscomb = require("gulp-csscomb");
 
-const scss = {
-    src : "./src/scss/*.scss",
-    dest: "./dest/scss"
-}
 const css = {
-    dest: "./dest/css"
-}
+  src: "./src/*",
+  dest: "./dest",
+};
 
-const scssCompile = () => {
-    return src(scss.src)
-        .pipe(csscomb())
-        .pipe(sass())
-        .pipe(dest(css.dest));
-}
-const scssSortProperty = () => {
-    return src(scss.src)
-        .pipe(csscomb())
-        .pipe(dest(scss.dest));
-}
+const sortProperty = () => {
+  return src(css.src).pipe(csscomb()).pipe(dest(css.dest));
+};
 const watchTask = () => {
-    watch(scss.src, scssCompile);
-    watch(scss.src, scssSortProperty);
-}
+  watch(css.src, sortProperty);
+};
 
-exports.default = series(scssCompile, scssSortProperty, watchTask);
+exports.default = series(sortProperty, watchTask);
